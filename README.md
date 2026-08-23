@@ -32,6 +32,28 @@ With [uv](https://docs.astral.sh/uv/), replace installation with `uv sync` and p
 
 On PowerShell, `examples/demo.ps1` runs the complete approval flow.
 
+## How it works
+
+```mermaid
+flowchart TD
+    P[Producer<br/>human, agent, or script] --> C[Task card builder<br/>typed JSON + event history]
+    C --> I[(inbox/)]
+    I -->|atomic claim| W[Worker<br/>processing/]
+    W --> X{Outcome}
+    X -->|success| A{Approval required?}
+    X -->|error| F[(failed/)]
+    A -->|no| D[(processed/)]
+    A -->|yes| R[(awaiting_approval/)]
+    R -->|approve| D
+    R -->|reject| F
+    I -.-> O[Watcher + digest]
+    W -.-> O
+    R -.-> O
+    D -.-> O
+```
+
+The task card is the message, the folders are the queue state, and atomic filesystem moves are the coordination primitive. No broker process needs to stay running.
+
 ## Lifecycle
 
 ```mermaid
