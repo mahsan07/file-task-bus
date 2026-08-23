@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "file-task-bus"
+version = "0.1.0"
+description = "A small filesystem-based task handoff protocol for coordinating AI agents and local tools."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "mahsan07" }]
+dependencies = []
+
+[project.scripts]
+file-task-bus = "file_task_bus.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,21 +1,40 @@
 # Architecture
 
-## Design summary
+## Data flow
 
-The filesystem is the transport and audit surface. Small scripts provide claiming, validation, watching, and digest behavior while keeping the task card human-readable.
+```mermaid
+flowchart LR
+    P[Producer] -->|JSON task card| I[inbox]
+    I -->|atomic rename| W[Worker / processing]
+    W -->|result| A{Approval required?}
+    A -->|no| D[processed]
+    A -->|yes| R[awaiting_approval]
+    R -->|approve| D
+    R -->|reject| F[failed]
+    W -->|error| F
+    O[Human observer] -. reads .-> I
+    O -. reads .-> W
+    O -. reads .-> R
+```
 
-## Main components
+`TaskBus` owns lane creation, JSON serialization, transitions, digest generation, and watching. State is implied by the directory and repeated in the task card for portability.
 
-- Write a task card to inbox
-- Claim it into processing
-- Produce artifacts and evidence
-- Move to processed, failed, or awaiting approval
-- Publish a digest or outbox message
+## Reliability properties
 
-## Initial implementation boundary
+- Workers claim an inbox card with a same-volume filesystem rename.
+- JSON updates use a temporary sibling followed by `os.replace`.
+- Invalid transitions fail visibly and preserve the current card.
+- IDs are unique across all lanes.
+- Events preserve who moved a task and when.
 
-Start with a local, inspectable implementation. Prefer plain files, small typed schemas, and deterministic commands before introducing a database, hosted service, or provider-specific adapter.
+The implementation does not promise network-filesystem locking semantics or distributed exactly-once execution. Use it as a local coordination primitive and make worker operations idempotent.
 
-## Verification
+## Package layout
 
-Every MVP feature should have at least one fixture, one failure case, and one visible verification artifact. Keep inferred behavior separate from measured behavior.
+```text
+src/file_task_bus/
+  bus.py       lifecycle and persistence
+  cli.py       dependency-free CLI
+tests/         success and failure fixtures
+examples/      reproducible PowerShell demo
+```

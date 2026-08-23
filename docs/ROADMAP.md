@@ -1,6 +1,6 @@
 # Roadmap
 
-## Phase 1: contract and local demo
+## Phase 1: runnable local MVP (complete)
 
 - Task-card schema
 - Atomic claim helper
@@ -9,11 +9,10 @@
 - Digest generator
 - Failure and approval lanes
 
-## Later phases
+## Candidate next phases
 
-- Reference CLI
-- Cross-platform watcher
-- Schema validation
+- Published JSON Schema
+- Cross-platform watcher integration tests
 - Adapters for agent providers
 - Optional SQLite index
 
