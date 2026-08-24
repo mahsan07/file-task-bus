@@ -18,6 +18,12 @@ Solo builders and small teams coordinating local agents, scripts, and human revi
 
 Drop a research task into inbox, let a worker process it, and review the evidence before it reaches outbox.
 
+## Visual overview
+
+![File Task Bus architecture flow](assets/architecture-flow.svg)
+
+[Open the architecture and sequence diagrams](docs/DIAGRAMS.md).
+
 ## Current status
 
 Public scaffold. The repository defines the product contract and MVP boundaries before implementation begins.
