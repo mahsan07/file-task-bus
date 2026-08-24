@@ -2,6 +2,10 @@
 
 ## Lifecycle flow
 
+![File Task Bus lifecycle flow](../assets/architecture-flow.svg)
+
+### Mermaid source
+
 ```mermaid
 flowchart TD
   Submit["Task card written"] --> Validate["Validate card"]
@@ -13,6 +17,10 @@ flowchart TD
 ```
 
 ## Review sequence
+
+![File Task Bus review sequence](../assets/sequence-flow.svg)
+
+### Mermaid source
 
 ```mermaid
 sequenceDiagram
